@@ -7,3 +7,7 @@ mirai 框架加密算法提供器。
 
 # 简介
 正在编写。
+
+## 捐助
+
+前往 [爱发电](https://afdian.net/a/mrxiaom) 捐助我。
