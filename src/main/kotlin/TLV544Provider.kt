@@ -4,7 +4,7 @@ import net.mamoe.mirai.internal.spi.EncryptService
 import net.mamoe.mirai.internal.spi.EncryptServiceContext
 import net.mamoe.mirai.internal.spi.EncryptServiceContext.Companion.KEY_COMMAND_STR
 
-class TLV544Provider : EncryptService {
+object TLV544Provider : EncryptService {
     override fun encryptTlv(
         context: EncryptServiceContext,
         tlvType: Int,
