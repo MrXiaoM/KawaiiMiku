@@ -10,7 +10,7 @@ import kotlin.io.use
 
 object TLV544Provider : EncryptService {
     private val dataForVerify = arrayOf("810_2", "810_7")
-    // 暂不确定 810_25 的 salt 算法类型
+    // 暂不确定 810_2 的 salt 算法类型
     private val saltV1 = arrayOf("810_25", "810_7", "810_24")
     private val saltV2 = arrayOf("810_f", "810_9", "810_a", "810_d")
     override fun encryptTlv(
