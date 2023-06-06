@@ -8,7 +8,7 @@ import net.mamoe.mirai.utils.*
 import java.net.URL
 import kotlin.io.use
 
-object TLV544Provider : EncryptService {
+object EncryptProvider : EncryptService {
     private val dataForVerify = arrayOf("810_2", "810_7")
     // 暂不确定 810_2 的 salt 算法类型
     private val saltV1 = arrayOf("810_25", "810_7", "810_24")
