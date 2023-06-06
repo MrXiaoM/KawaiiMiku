@@ -5,6 +5,7 @@ import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.utils.Services
 import net.mamoe.mirai.utils.info
+import kotlin.reflect.jvm.jvmName
 
 object KawaiiMiku : KotlinPlugin(
     JvmPluginDescription(
@@ -17,10 +18,10 @@ object KawaiiMiku : KotlinPlugin(
 ) {
     override fun PluginComponentStorage.onLoad() {
        Services.register("net.mamoe.mirai.internal.spi.EncryptService",
-           "top.mrxiaom.mirai.kawaii.TLV544Provider") {
-           return@register TLV544Provider
+           EncryptProvider::class.jvmName) {
+           return@register EncryptProvider
        }
-        logger.info("Registered service: TLV544Provider")
+        logger.info("Registered service: ${EncryptProvider::class.jvmName}")
     }
     override fun onEnable() {
         logger.info { "Plugin loaded" }
