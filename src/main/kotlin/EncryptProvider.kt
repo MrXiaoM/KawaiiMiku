@@ -3,8 +3,18 @@ package top.mrxiaom.mirai.kawaii
 import kotlinx.serialization.json.*
 import net.mamoe.mirai.internal.spi.EncryptService
 import net.mamoe.mirai.internal.spi.EncryptServiceContext
+import net.mamoe.mirai.internal.spi.EncryptServiceContext.Companion.KEY_BOT_DEVICE
+import net.mamoe.mirai.internal.spi.EncryptServiceContext.Companion.KEY_BOT_PROTOCOL
+import net.mamoe.mirai.internal.spi.EncryptServiceContext.Companion.KEY_BOT_QIMEI16
 import net.mamoe.mirai.internal.spi.EncryptServiceContext.Companion.KEY_COMMAND_STR
+import net.mamoe.mirai.internal.spi.SignResult
 import net.mamoe.mirai.utils.*
+import org.apache.hc.client5.http.classic.methods.HttpPost
+import org.apache.hc.client5.http.entity.UrlEncodedFormEntity
+import org.apache.hc.client5.http.impl.classic.HttpClients
+import org.apache.hc.core5.http.NameValuePair
+import org.apache.hc.core5.http.io.entity.EntityUtils
+import java.net.HttpURLConnection.HTTP_OK
 import java.net.URL
 import kotlin.io.use
 
@@ -60,4 +70,50 @@ object EncryptProvider : EncryptService {
         }
         return payload
     }
+
+    override fun doSecSign(
+        context: EncryptServiceContext,
+        sequenceId: Int,
+        body: ByteArray
+    ): SignResult? {
+        val uin = context.id
+        val commandName = context.extraArgs.get(KEY_COMMAND_STR)
+        val androidId = context.extraArgs.get(KEY_BOT_DEVICE).androidId
+        val qimei16 = context.extraArgs.get(KEY_BOT_QIMEI16)?: return null
+        val protocol = context.extraArgs.get(KEY_BOT_PROTOCOL)
+
+        val client = HttpClients.createDefault()
+        val httpPost = HttpPost(ProviderConfig.apiUrl.removeSuffix("/") + "/sign")
+        val params = mapOf(
+            "name" to ProviderConfig.apiVersionSign,
+            "qua" to ProviderConfig.qua[protocol.name.uppercase()],
+            "uin" to uin,
+            "buffer" to body.toUHexString(""),
+            "cmd" to commandName,
+            "seq" to sequenceId,
+            "androidId" to androidId.toUHexString(),
+            "qimei16" to qimei16
+        ).map { NameValue(it.key, it.value.toString()) }
+        httpPost.entity = UrlEncodedFormEntity(params, Charsets.UTF_8)
+        httpPost.setHeader("Content-type", "application/x-www-form-urlencoded")
+        return client.execute(httpPost) {
+            if (it.code != HTTP_OK) return@execute null
+            val msg = EntityUtils.toString(it.entity)
+            val json = Json.parseToJsonElement(msg).jsonObject
+            if ((json["code"]?.jsonPrimitive?.intOrNull ?: -1) != 0) return@execute null
+            val data = json["data"]?.jsonObject ?: return@execute null
+            val token = data["token"]?.hexToBytes() ?: return@execute null
+            val extra = data["extra"]?.hexToBytes() ?: return@execute null
+            val sign = data["sign"]?.hexToBytes() ?: return@execute null
+            SignResult(qimei16.hexToBytes(), sign, token, extra)
+        }
+    }
+}
+fun JsonElement.hexToBytes(): ByteArray = jsonPrimitive.content.hexToBytes()
+class NameValue(
+    private val name: String,
+    private val value: String
+): NameValuePair {
+    override fun getName(): String = name
+    override fun getValue(): String = value
 }

@@ -17,4 +17,6 @@ repositories {
 dependencies {
     compileOnly("net.mamoe:mirai-core:2.15.0-RC")
     compileOnly("net.mamoe:mirai-core-utils:2.15.0-RC")
+
+    compileOnly("org.apache.httpcomponents.client5:httpclient5:5.2.1")
 }
