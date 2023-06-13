@@ -6,3 +6,5 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+include("tlv544_enc")
