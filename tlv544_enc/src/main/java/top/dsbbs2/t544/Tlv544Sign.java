@@ -296,13 +296,15 @@ public interface Tlv544Sign {
 
     public static long u32RotateRight(long value, int shift) {
         shift = shift & 0x1F; // Ensure shift is within 0-31 range
+        value = value & 0xFFFFFFFFL; // Ensure value is within the range of uint32
 
-        return (value >>> shift) | (value << (32 - shift));
+        return ((value >>> shift) | (value << (32 - shift))) & 0xFFFFFFFFL;
     }
     public static long u32RotateLeft(long value, int shift) {
         shift = shift & 0x1F; // Ensure shift is within 0-31 range
+        value = value & 0xFFFFFFFFL; // Ensure value is within the range of uint32
 
-        return (value << shift) | (value >>> (32 - shift));
+        return ((value << shift) | (value >>> (32 - shift))) & 0xFFFFFFFFL;
     }
     public static <T> List<T> subList(List<T> l,int start)
     {
