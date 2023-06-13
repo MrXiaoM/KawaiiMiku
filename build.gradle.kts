@@ -20,6 +20,14 @@ allprojects {
         mavenCentral()
         maven("https://repo.mirai.mamoe.net/snapshots/")
     }
+    tasks {
+        processResources {
+            from("LICENSE")
+            if (project != rootProject) {
+                rename("LICENSE", "LICENSE-" + project.name)
+            }
+        }
+    }
 }
 dependencies {
     compileOnly("net.mamoe:mirai-core:2.15.0-dev-98")
