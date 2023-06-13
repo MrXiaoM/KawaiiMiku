@@ -3,7 +3,7 @@ plugins {
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 
-    id("net.mamoe.mirai-console") version "2.15.0-RC"
+    id("net.mamoe.mirai-console") version "2.15.0-dev-98"
 }
 allprojects {
     group = "top.mrxiaom.mirai"
@@ -18,11 +18,11 @@ allprojects {
         mavenLocal()
         maven("https://repo.huaweicloud.com/repository/maven/")
         mavenCentral()
+        maven("https://repo.mirai.mamoe.net/snapshots/")
     }
 }
 dependencies {
-    compileOnly("net.mamoe:mirai-core:2.15.0-RC")
-    compileOnly("net.mamoe:mirai-core-utils:2.15.0-RC")
-
-    compileOnly("org.apache.httpcomponents.client5:httpclient5:5.2.1")
+    compileOnly("net.mamoe:mirai-core:2.15.0-dev-98")
+    compileOnly("net.mamoe:mirai-core-utils:2.15.0-dev-98")
+    api(project("tlv544_enc"))
 }
