@@ -109,7 +109,7 @@ public interface Tlv544Sign {
             Arrays.fill(out,35,35+4,(byte)0);
 
             return out;
-        }catch(Throwable t){return sneakyThrow(t);}
+    }catch(Throwable t){return sneakyThrow(t);}
     }
 
     public static void tencentEncB(List<Short> ktb, byte[] crc, byte[] output) {
@@ -117,16 +117,16 @@ public interface Tlv544Sign {
         for(int i=0;i<output.length;i++)
         {
             if((i & 15) == 0) {
-                for(int i2=0;i2<buf.length;i2++) buf[i2]=(byte)(short)ktb.get(i2);
-                _tencent_enc_b(buf, ENC_TRB);
-                for(int j=ktb.size()-1;j>-1;j--){
-                    ktb.set(j,ubyteWrappingAdd(ktb.get(j),(short)1));
-                    if(ktb.get(j) != 0) {
-                        break;
-                    }
+            for(int i2=0;i2<buf.length;i2++) buf[i2]=(byte)(short)ktb.get(i2);
+            _tencent_enc_b(buf, ENC_TRB);
+            for(int j=ktb.size()-1;j>-1;j--){
+                ktb.set(j,ubyteWrappingAdd(ktb.get(j),(short)1));
+                if(ktb.get(j) != 0) {
+                    break;
                 }
             }
-            output[i] = sub_aa(i, ENC_TEA, buf, crc);
+        }
+        output[i] = sub_aa(i, ENC_TEA, buf, crc);
         }
     }
     public static void _tencent_enc_b(byte[] p1,long[] p2)
@@ -531,7 +531,7 @@ public interface Tlv544Sign {
         put_16b.apply(Arrays.asList(stat).subList(14,16),data);
         Long[] org_state=state.org_state;
         for(int i=0;i<12;i++) org_state[i]=stat[i];
-        for(int i=0;i<16;i++) org_state[i]= ThreadLocalRandom.current().nextLong((long)Math.pow(2,32));
+        for(int i=12;i<16;i++) org_state[i]= ThreadLocalRandom.current().nextLong((long)Math.pow(2,32));
     }
     public static long littleEndianBytesToUnsignedInt(byte[] bytes) {
         if (bytes.length > 4) {
