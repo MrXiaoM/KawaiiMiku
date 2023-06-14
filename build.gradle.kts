@@ -7,7 +7,7 @@ plugins {
 }
 allprojects {
     group = "top.mrxiaom.mirai"
-    version = "0.1.1"
+    version = "0.1.2"
 
     apply(plugin = "java")
     java {
