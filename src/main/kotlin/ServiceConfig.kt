@@ -21,18 +21,14 @@ object ServiceConfig : ReadOnlyPluginConfig("config") {
         val account: String,
         @Comment(
             """
-            账号配置. 可用配置列表 (注意大小写):
-            "androidId": "xxxxxxxxxxxxxxxx"
+            账号配置. 暂无可用配置
         """
         )
         val configuration: MutableMap<ConfigurationKey, @Serializable(with = YamlDynamicSerializer::class) Any> = mutableMapOf(
-            ConfigurationKey.androidId to "xxxxxxxxxxxxxxxx"
         ),
     ) {
         @Serializable
-        @Suppress("EnumEntryName")
         enum class ConfigurationKey {
-            androidId,
             ;
 
             object Parser : CommandValueArgumentParser<ConfigurationKey>,
@@ -55,9 +51,7 @@ object ServiceConfig : ReadOnlyPluginConfig("config") {
         mutableListOf(
             Account(
                 account = "123456",
-                configuration = mutableMapOf(
-                    Account.ConfigurationKey.androidId to "xxxxxxxxxxxxxxxx",
-                )
+                configuration = mutableMapOf()
             )
         )
     )
