@@ -25,7 +25,7 @@ object ServiceConfig : ReadOnlyPluginConfig("config") {
             "androidId": "xxxxxxxxxxxxxxxx"
         """
         )
-        val configuration: Map<ConfigurationKey, @Serializable(with = YamlDynamicSerializer::class) Any> = mapOf(
+        val configuration: MutableMap<ConfigurationKey, @Serializable(with = YamlDynamicSerializer::class) Any> = mutableMapOf(
             ConfigurationKey.androidId to "xxxxxxxxxxxxxxxx"
         ),
     ) {
@@ -55,7 +55,7 @@ object ServiceConfig : ReadOnlyPluginConfig("config") {
         mutableListOf(
             Account(
                 account = "123456",
-                configuration = mapOf(
+                configuration = mutableMapOf(
                     Account.ConfigurationKey.androidId to "xxxxxxxxxxxxxxxx",
                 )
             )
