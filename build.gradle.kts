@@ -32,5 +32,4 @@ allprojects {
 dependencies {
     compileOnly("net.mamoe:mirai-core:2.15.0-dev-98")
     compileOnly("net.mamoe:mirai-core-utils:2.15.0-dev-98")
-    api(project("tlv544_enc"))
 }

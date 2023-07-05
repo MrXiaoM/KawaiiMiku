@@ -7,5 +7,3 @@ pluginManagement {
         maven("https://repo.mirai.mamoe.net/snapshots/")
     }
 }
-
-include("tlv544_enc")
