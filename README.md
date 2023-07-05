@@ -12,7 +12,7 @@ mirai 框架加密算法提供器。
 
 ## 1.下载开发版本
 
-使用 [Lapis](https://mirai.mamoe.net/topic/2333) 根据操作提示，安装一个大于或等于 `2.15.0-core-pkgsso-19` 的开发版本到一个新的文件夹。  
+使用 [Lapis](https://mirai.mamoe.net/topic/2333) 根据操作提示，安装一个大于或等于 `2.15.0-dev-105` 的开发版本到一个新的文件夹。  
 并安装本插件，启动 mirai 以生成插件配置文件，然后关闭 mirai。
 
 此时大致目录结构如下
