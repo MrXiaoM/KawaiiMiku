@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "top.mrxiaom.mirai"
-version = "0.1.2"
+version = "0.1.3"
 
 buildConfig {
     className("BuildConstants")
@@ -41,6 +41,5 @@ dependencies {
     compileOnly("net.mamoe:mirai-core")
     compileOnly("net.mamoe:mirai-core-utils")
 
-    compileOnly("net.mamoe.yamlkt:yamlkt:0.12.0")
     compileOnly("org.apache.httpcomponents:httpclient:4.5.14")
 }
