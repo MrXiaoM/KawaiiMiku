@@ -17,7 +17,7 @@ object KawaiiMiku : KotlinPlugin(
     }
 ) {
     override fun PluginComponentStorage.onLoad() {
-        Services.registerAsOverride("net.mamoe.mirai.internal.spi.EncryptService", EncryptProvider::class.jvmName) { EncryptProvider }
+        EncryptProvider.register()
         logger.info("Registered service: ${EncryptProvider::class.jvmName}")
     }
     override fun onEnable() {

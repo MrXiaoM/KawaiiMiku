@@ -2,8 +2,16 @@ package top.mrxiaom.mirai.kawaii
 
 import net.mamoe.mirai.internal.spi.EncryptService
 import net.mamoe.mirai.internal.spi.EncryptServiceContext
+import net.mamoe.mirai.utils.Services
+import kotlin.reflect.jvm.jvmName
 
 object EncryptProvider : EncryptService {
+    fun register() {
+        Services.registerAsOverride(
+            EncryptService::class.jvmName,
+            this::class.jvmName) { this }
+    }
+
     override fun encryptTlv(
         context: EncryptServiceContext,
         tlvType: Int,
@@ -14,6 +22,19 @@ object EncryptProvider : EncryptService {
 
         KawaiiMiku.logger.info("t544 command: $command")
 
-        return null
+        TODO("Not yet implemented")
+    }
+
+    override fun initialize(context: EncryptServiceContext) {
+        TODO("Not yet implemented")
+    }
+
+    override fun qSecurityGetSign(
+        context: EncryptServiceContext,
+        sequenceId: Int,
+        commandName: String,
+        payload: ByteArray
+    ): EncryptService.SignResult? {
+        TODO("Not yet implemented")
     }
 }

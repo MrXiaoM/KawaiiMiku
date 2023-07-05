@@ -3,7 +3,7 @@ plugins {
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 
-    id("net.mamoe.mirai-console") version "2.15.0-dev-98"
+    id("net.mamoe.mirai-console") version "2.15.0-core-pkgsso-19"
 }
 allprojects {
     group = "top.mrxiaom.mirai"
@@ -30,6 +30,7 @@ allprojects {
     }
 }
 dependencies {
-    compileOnly("net.mamoe:mirai-core:2.15.0-dev-98")
-    compileOnly("net.mamoe:mirai-core-utils:2.15.0-dev-98")
+    implementation(platform("net.mamoe:mirai-bom:2.15.0-core-pkgsso-19"))
+    compileOnly("net.mamoe:mirai-core")
+    compileOnly("net.mamoe:mirai-core-utils")
 }
