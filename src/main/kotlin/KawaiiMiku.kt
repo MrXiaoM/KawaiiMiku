@@ -21,6 +21,7 @@ object KawaiiMiku : KotlinPlugin(
         logger.info("Registered service: ${EncryptProvider::class.jvmName}")
     }
     override fun onEnable() {
-        logger.info { "Plugin loaded" }
+        ServiceConfig.reload()
+        logger.info("Plugin enabled")
     }
 }
