@@ -3,6 +3,7 @@ package top.mrxiaom.mirai.kawaii
 import kotlinx.coroutines.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
 import net.mamoe.mirai.internal.spi.EncryptService
@@ -89,9 +90,9 @@ class EncryptProvider(
             "uin" to context.id,
             "salt" to payload.toUHexString(""),
             "data" to command
-        )
+        ) ?: return null
 
-        return energy?.hexToBytes()
+        return Json.decodeFromJsonElement(String.serializer(), energy).hexToBytes()
     }
 
     override fun qSecurityGetSign(

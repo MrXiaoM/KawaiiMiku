@@ -26,11 +26,11 @@ open class SignClient(
         return url.removeSuffix("/") + "/" + path.removePrefix("/");
     }
 
-    fun get(path: String): String? {
+    fun get(path: String): JsonElement? {
         return httpGet(getServiceUrl(path))
     }
 
-    fun get(path: String, vararg arguments: Pair<String, Any>): String? {
+    fun get(path: String, vararg arguments: Pair<String, Any>): JsonElement? {
         return httpGet(getServiceUrl(path, arguments.toMap()))
     }
 
@@ -39,7 +39,7 @@ open class SignClient(
     }
 }
 
-fun httpGet(url: String): String? {
+fun httpGet(url: String): JsonElement? {
     HttpClients.createDefault().use {
         val response = it.execute(HttpGet(url).also { httpGet ->
             httpGet.config = RequestConfig.custom()
@@ -50,9 +50,10 @@ fun httpGet(url: String): String? {
                 .build()
         })
         if (response.statusLine.statusCode == 200) {
-            val json = Json.decodeFromString(DataWrapper.serializer(), EntityUtils.toString(response.entity))
+            val result = EntityUtils.toString(response.entity)
+            val json = Json.decodeFromString(DataWrapper.serializer(), result)
             if (json.code == 0) {
-                return EntityUtils.toString(response.entity)
+                return json.data
             } else {
                 EncryptProvider.logger.warning("ERROR ON $url, \ncode = ${json.code}, msg = ${json.message}")
             }
@@ -72,7 +73,8 @@ fun httpPostUrlEncoded(url: String, arguments: Map<String, Any>): JsonElement? {
             httpPost.entity = StringEntity(args, ContentType.APPLICATION_FORM_URLENCODED)
         })
         if (response.statusLine.statusCode == 200) {
-            val json = Json.decodeFromString(DataWrapper.serializer(), EntityUtils.toString(response.entity))
+            val result = EntityUtils.toString(response.entity)
+            val json = Json.decodeFromString(DataWrapper.serializer(), result)
             if (json.code == 0) {
                 return json.data
             } else {
