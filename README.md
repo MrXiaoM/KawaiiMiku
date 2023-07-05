@@ -1,9 +1,13 @@
 # KawaiiMiku
-mirai 框架加密算法提供器。
 
-[![mirai-core 2.15.0-core-pkgsso-19+](https://img.shields.io/badge/mirai--core-2.15.0--dev--109%2B-yellowgreen)](https://github.com/mamoe/mirai)
+mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.com/fuqiuluo/unidbg-fetch-qsign) 提供的数据包签名服务。
+
+[![mirai-core 2.15.0-core-pkgsso-19+](https://img.shields.io/badge/mirai--core-2.15.0--core--pkgsso--19-yellowgreen)](https://github.com/mamoe/mirai)
 [![Releases](https://img.shields.io/github/downloads/MrXiaoM/KawaiiMiku/total?label=%E4%B8%8B%E8%BD%BD%E9%87%8F&logo=github)](https://github.com/MrXiaoM/KawaiiMiku/releases)
 [![Stars](https://img.shields.io/github/stars/MrXiaoM/KawaiiMiku?label=%E6%A0%87%E6%98%9F&logo=github)](https://github.com/MrXiaoM/KawaiiMiku/stargazers)
+
+**警告:** 使用签名服务有被冻结/封号的风险，请视自身情况决定是否使用。  
+如果你的账号可以正常登录，请**不要**来折腾签名服务。
 
 # 用法
 
@@ -96,17 +100,35 @@ mirai 框架加密算法提供器。
 
 ## 4.使用正确的协议版本
 
-安装插件 [fix-protocol-version 1.8.3](https://github.com/cssxsh/fix-protocol-version/releases/tag/v1.8.3)，根据你需要的版本下载不同的设备信息文件，放到你的 mirai 目录下
+下载插件 [fix-protocol-version 1.8.3](https://github.com/cssxsh/fix-protocol-version/releases/tag/v1.8.3)，使用压缩软件打开 fix-protocol-version 插件 `jar`。
+
+点进 `xyz` 文件夹，一直点第一个文件夹直到出现一堆文件，**删除**里面所有 `.dll` 和 `.so` 结尾的文件，再复制到插件文件夹进行安装，并**确保你的mirai目录没有**`.dll`或`.so`结尾的文件。
+
+进行以上操作是为了禁止 fix-protocol-version 注册服务，避免旧版本作用于 `EncryptService` 的服务会与本插件作用于 `EncryptService.Factory` 的服务冲突。最近比较忙，我没有详细阅读 mirai 开发版本变更的代码，*不确定*会不会造成冲突。能稳一点就稳一点吧。
+
+然后根据**你需要的版本**下载设备信息文件，放到你的 mirai 目录下。只要文件名正确，启动 mirai 时，fix-protocol-version 应当会自动加载。
 * `8.9.58`: https://github.com/RomiChan/protocol-versions/blob/daae3c8f35d27f870f35ea89116914fdff7c049e/android_phone.json
 * `8.9.63`: https://github.com/RomiChan/protocol-versions/blob/b74c0ac74264207d1070c651846079256d00a574/android_phone.json
 
 然后启动 mirai。
 
-启动 mirai 时可无视”服务注册失败“的提示。
+如果启动 mirai 时显示”注册服务失败“的报错提示代表我们已经成功禁止 fix-protocol-version 的服务注册了，该报错可忽略。
 
 查看启动时的提示，检查是否成功更换正确协议版本的协议信息。
 
 若正确，可尝试登录。请保持签名服务的开启。
+
+**至此，你已经完成了签名服务与签名插件配置。**
+
+# 从整合包迁移
+
+如果你想将你的插件和数据从**你正在使用的 mirai**、**某某整合包**或者**MCL**迁移到新的包，请按照以下步骤操作
+* 确保新包旧包的 mirai 均已彻底关闭。
+* 复制旧包的 `config`、`data`、`plugins` 文件夹到新包，已有文件全部覆盖。
+* 通常只需要复制以上三个文件夹就足够了，很少有插件不把数据/配置存在 `data` 或 `config` 文件夹。
+* 在新包的 `plugins` 文件夹检查有没有名字重复、版本不同的插件，删除旧版本的插件。
+* 删除 `mcl-addon` 插件。(如果有的话)
+* 后缀为 `.sha1` 的文件用于 MCL 校验插件文件完整性，如果你不需要可以删除。
 
 # 如何在 mirai-core 中使用
 
