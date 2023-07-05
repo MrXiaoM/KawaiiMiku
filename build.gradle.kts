@@ -40,5 +40,7 @@ dependencies {
     implementation(platform("net.mamoe:mirai-bom:2.15.0-core-pkgsso-19"))
     compileOnly("net.mamoe:mirai-core")
     compileOnly("net.mamoe:mirai-core-utils")
+
     compileOnly("net.mamoe.yamlkt:yamlkt:0.12.0")
+    compileOnly("org.apache.httpcomponents:httpclient:4.5.14")
 }
