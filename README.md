@@ -1,5 +1,7 @@
 # KawaiiMiku
 
+**测试未通过，敬请期待**
+
 mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.com/fuqiuluo/unidbg-fetch-qsign) 提供的数据包签名服务。
 
 [![mirai-core 2.15.0-core-pkgsso-19+](https://img.shields.io/badge/mirai--core-2.15.0--core--pkgsso--19-yellowgreen)](https://github.com/mamoe/mirai)
