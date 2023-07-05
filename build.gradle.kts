@@ -3,6 +3,7 @@ plugins {
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 
+    `maven-publish`
     id("net.mamoe.mirai-console") version "2.15.0-core-pkgsso-19"
     id("com.github.gmazzo.buildconfig") version "3.1.0"
 }
@@ -42,4 +43,20 @@ dependencies {
     compileOnly("net.mamoe:mirai-core-utils")
 
     compileOnly("org.apache.httpcomponents:httpclient:4.5.14")
+}
+
+publishing {
+    publications {
+        register("JitPack", MavenPublication::class) {
+            groupId = "com.github.MrXiaoM"
+            artifactId = "KawaiiMiku"
+            version = project.version.toString()
+
+            from(components.named("kotlin").get())
+        }
+    }
+
+    repositories {
+        mavenLocal()
+    }
 }

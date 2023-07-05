@@ -108,6 +108,50 @@ mirai 框架加密算法提供器。
 
 若正确，可尝试登录。请保持签名服务的开启。
 
+# 如何在 mirai-core 中使用
+
+引用本插件为依赖
+
+```kotlin
+// Gradle
+repositories {
+    maven("https://jitpack.io")
+}
+
+dependencies {
+    implementation("com.github.MrXiaoM:KawaiiMiku:0.1.3")
+}
+```
+```pom
+<!-- Maven -->
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+
+<dependency>
+  <groupId>com.github.MrXiaoM</groupId>
+  <artifactId>KawaiiMiku</artifactId>
+  <version>0.1.3</version>
+</dependency>
+```
+在登录前调用
+
+```kotlin
+// kotlin
+EncryptProvider.Factory(serviceUrl, serviceKey).registerAsOverride()
+```
+```java
+// java
+new EncryptProvider.Factory(serviceUrl, serviceKey).registerAsOverride()
+```
+
+即可注册加密算法服务 以对接签名服务。
+
+**请勿重复注册服务！如需更改地址或key，请重启程序。**
+
 # 捐助
 
 前往 [爱发电](https://afdian.net/a/mrxiaom) 捐助我。
