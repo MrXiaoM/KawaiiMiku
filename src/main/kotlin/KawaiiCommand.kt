@@ -3,6 +3,10 @@ package top.mrxiaom.mirai.kawaii
 import net.mamoe.mirai.console.command.CommandSender
 import net.mamoe.mirai.console.command.CompositeCommand
 import net.mamoe.mirai.console.command.descriptor.buildCommandArgumentContext
+import net.mamoe.mirai.console.plugin.jvm.reloadPluginConfig
+import net.mamoe.mirai.console.plugin.jvm.savePluginConfig
+import top.mrxiaom.mirai.kawaii.KawaiiCommand.reload
+import top.mrxiaom.mirai.kawaii.KawaiiMiku.save
 
 object KawaiiCommand : CompositeCommand(
     KawaiiMiku, "kawaii",
@@ -23,11 +27,13 @@ object KawaiiCommand : CompositeCommand(
         }
         if (config != null && value != null) {
             account.configuration[config] = value
-            sendMessage("已设置 $qq 的配置 $config 为 $value")
+            KawaiiMiku.savePluginConfig(ServiceConfig)
+            sendMessage("[KawaiiMiku] 已设置 $qq 的配置 $config 为 $value")
         } else if (!has) {
-            sendMessage("已创建配置 $qq")
+            KawaiiMiku.savePluginConfig(ServiceConfig)
+            sendMessage("[KawaiiMiku] 已创建配置 $qq")
         } else {
-            sendMessage("用法: /kawaii set <qq> [config] [value]")
+            sendMessage("[KawaiiMiku] 用法: /kawaii set <qq> [config] [value]")
         }
     }
     @Description("查看账号配置")
@@ -35,12 +41,12 @@ object KawaiiCommand : CompositeCommand(
     suspend fun CommandSender.check(qq: Long) {
         val account = ServiceConfig.accounts.firstOrNull { it.account == qq.toString() }
         if (account == null) {
-            sendMessage("无法找到账户 $qq 的配置")
+            sendMessage("[KawaiiMiku] 无法找到账户 $qq 的配置")
         } else {
             val config = account.configuration
-                .map { "${it.key} = ${it.value}"}
+                .map { "[KawaiiMiku] ${it.key} = ${it.value}"}
                 .joinToString("\n")
-            sendMessage("$qq 的配置:\n$config")
+            sendMessage("[KawaiiMiku] $qq 的配置:\n$config")
         }
     }
     @Description("移除账号配置")
@@ -48,9 +54,17 @@ object KawaiiCommand : CompositeCommand(
     suspend fun CommandSender.remove(qq: Long) {
         val removed = ServiceConfig.accounts.removeIf { it.account == qq.toString() }
         if (removed) {
-            sendMessage("已移除账户 $qq 的配置")
+            KawaiiMiku.savePluginConfig(ServiceConfig)
+            sendMessage("[KawaiiMiku] 已移除账户 $qq 的配置")
         } else {
-            sendMessage("无法找到账户 $qq 的配置")
+            sendMessage("[KawaiiMiku] 无法找到账户 $qq 的配置")
         }
+    }
+
+    @Description("从本地文件重新加载配置")
+    @SubCommand
+    suspend fun CommandSender.reload() {
+        KawaiiMiku.reloadPluginConfig(ServiceConfig)
+        sendMessage("[KawaiiMiku] 配置文件已重载")
     }
 }
