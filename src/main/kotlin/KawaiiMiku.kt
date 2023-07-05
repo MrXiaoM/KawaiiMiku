@@ -15,7 +15,9 @@ object KawaiiMiku : KotlinPlugin(
 ) {
     override fun PluginComponentStorage.onLoad() {
         ServiceConfig.reload()
-        EncryptProvider.Factory(ServiceConfig.serviceUrl, ServiceConfig.serviceKey).registerAsOverride()
+        EncryptProvider.Factory.put(ServiceConfig.serviceUrl, ServiceConfig.serviceKey)
+        EncryptProvider.Factory.registerAsOverride()
+
         logger.info("Registered service: ${EncryptProvider.Factory::class.qualifiedName}")
     }
     override fun onEnable() {

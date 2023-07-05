@@ -14,6 +14,8 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
 只要你严格按照操作流程，就可以搭建并使用签名服务。  
 所有组件均开源，由你自己操作安装可**避免被插入后门代码**。
 
+**注意:** 签名服务对电脑性能有一定要求，请使用良好的 CPU 并保持内存充足。
+
 ## 1.下载开发版本
 
 使用 [Lapis](https://mirai.mamoe.net/topic/2333) 根据操作提示，安装一个大于或等于 `2.15.0-dev-105` 的开发版本到一个新的文件夹。  
@@ -163,11 +165,8 @@ dependencies {
 
 ```kotlin
 // kotlin
-EncryptProvider.Factory(serviceUrl, serviceKey).registerAsOverride()
-```
-```java
-// java
-new EncryptProvider.Factory(serviceUrl, serviceKey).registerAsOverride()
+EncryptProvider.Factory.put(serviceUrl, serviceKey)
+EncryptProvider.Factory.registerAsOverride()
 ```
 
 即可注册加密算法服务 以对接签名服务。

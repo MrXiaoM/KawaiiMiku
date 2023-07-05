@@ -72,7 +72,7 @@ class EncryptProvider(
         get("register",
             "uin" to context.id,
             "android_id" to deviceInfo.androidId.decodeToString(),
-            "guid" to deviceInfo.guid.toUHexString(),
+            "guid" to deviceInfo.guid.toUHexString(""),
             "qimei36" to context.extraArgs[KEY_QIMEI36],
             "key" to key
         )
@@ -92,7 +92,10 @@ class EncryptProvider(
             "data" to command
         ) ?: return null
 
-        return Json.decodeFromJsonElement(String.serializer(), energy).hexToBytes()
+        val data = Json.decodeFromJsonElement(String.serializer(), energy)
+        logger.verbose("encryptTlv $data")
+
+        return data.hexToBytes()
     }
 
     override fun qSecurityGetSign(
@@ -155,14 +158,17 @@ class EncryptProvider(
         val logger: MiraiLogger = MiraiLogger.Factory.create(EncryptProvider::class)
     }
 
-    class Factory(
-        private val url: String,
-        private val key: String,
-        private vararg val supportedProtocol: BotConfiguration.MiraiProtocol = arrayOf(
+    object Factory : EncryptService.Factory {
+        private lateinit var url: String
+        private lateinit var key: String
+        var supportedProtocol: Array<BotConfiguration.MiraiProtocol> = arrayOf(
             BotConfiguration.MiraiProtocol.ANDROID_PHONE,
             BotConfiguration.MiraiProtocol.ANDROID_PAD
         )
-    ) : EncryptService.Factory {
+        fun put(url: String, key: String) {
+            this.url = url
+            this.key = key
+        }
         fun register() {
             Services.register(
                 EncryptService.Factory::class.qualifiedName!!,

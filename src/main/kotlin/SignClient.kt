@@ -43,14 +43,15 @@ fun httpGet(url: String): JsonElement? {
     HttpClients.createDefault().use {
         val response = it.execute(HttpGet(url).also { httpGet ->
             httpGet.config = RequestConfig.custom()
-                .setConnectTimeout(5000)
-                .setSocketTimeout(5000)
-                .setConnectionRequestTimeout(5000)
+                .setConnectTimeout(30000)
+                .setSocketTimeout(30000)
+                .setConnectionRequestTimeout(30000)
                 .setRedirectsEnabled(true)
                 .build()
         })
         if (response.statusLine.statusCode == 200) {
             val result = EntityUtils.toString(response.entity)
+            EncryptProvider.logger.verbose("$url :\n$result")
             val json = Json.decodeFromString(DataWrapper.serializer(), result)
             if (json.code == 0) {
                 return json.data
@@ -74,6 +75,7 @@ fun httpPostUrlEncoded(url: String, arguments: Map<String, Any>): JsonElement? {
         })
         if (response.statusLine.statusCode == 200) {
             val result = EntityUtils.toString(response.entity)
+            EncryptProvider.logger.verbose("$url $args :\n$result")
             val json = Json.decodeFromString(DataWrapper.serializer(), result)
             if (json.code == 0) {
                 return json.data
