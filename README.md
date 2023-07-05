@@ -1,7 +1,7 @@
 # KawaiiMiku
 mirai 框架加密算法提供器。
 
-[![mirai-core 2.15.0-dev-109+](https://img.shields.io/badge/mirai--core-2.15.0--dev--109%2B-yellowgreen)](https://github.com/mamoe/mirai)
+[![mirai-core 2.15.0-core-pkgsso-19+](https://img.shields.io/badge/mirai--core-2.15.0--dev--109%2B-yellowgreen)](https://github.com/mamoe/mirai)
 [![Releases](https://img.shields.io/github/downloads/MrXiaoM/KawaiiMiku/total?label=%E4%B8%8B%E8%BD%BD%E9%87%8F&logo=github)](https://github.com/MrXiaoM/KawaiiMiku/releases)
 [![Stars](https://img.shields.io/github/stars/MrXiaoM/KawaiiMiku?label=%E6%A0%87%E6%98%9F&logo=github)](https://github.com/MrXiaoM/KawaiiMiku/stargazers)
 
@@ -12,7 +12,7 @@ mirai 框架加密算法提供器。
 
 ## 1.下载开发版本
 
-使用 [Lapis](https://mirai.mamoe.net/topic/2333) 根据操作提示，安装一个大于或等于 `2.15.0-dev-109` 的开发版本到一个新的文件夹。  
+使用 [Lapis](https://mirai.mamoe.net/topic/2333) 根据操作提示，安装一个大于或等于 `2.15.0-core-pkgsso-19` 的开发版本到一个新的文件夹。  
 并安装本插件，启动 mirai 以生成插件配置文件，然后关闭 mirai。
 
 此时大致目录结构如下
