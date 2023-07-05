@@ -7,6 +7,11 @@ import kotlin.reflect.jvm.jvmName
 
 object EncryptProvider : EncryptService {
     fun register() {
+        Services.register(
+            EncryptService::class.jvmName,
+            this::class.jvmName) { this }
+    }
+    fun registerAsOverride() {
         Services.registerAsOverride(
             EncryptService::class.jvmName,
             this::class.jvmName) { this }
