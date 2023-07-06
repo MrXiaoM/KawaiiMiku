@@ -196,12 +196,12 @@ class EncryptProvider(
     }
 }
 
-private fun ByteReadPacket.readLong(): Long {
+fun ByteReadPacket.readLong(): Long {
     return InputPrimitives.readLong(this)
 }
 
 @Serializable
-private data class SignResult(
+internal data class SignResult(
     @SerialName("token")
     val token: String = "",
     @SerialName("extra")
@@ -215,7 +215,7 @@ private data class SignResult(
 )
 
 @Serializable
-private data class RequestCallback(
+internal data class RequestCallback(
     @SerialName("body")
     val body: String = "",
     @SerialName("callbackId")
