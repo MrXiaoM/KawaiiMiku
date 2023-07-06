@@ -117,3 +117,32 @@ unidbg-fetch-qsign 从 1.1.1 引入新机制，故小于或等于 1.1.0 的版�
 若正确，可尝试登录。请保持签名服务的开启。
 
 **至此，你已经完成了旧版签名服务与签名插件配置。**
+
+# 如何在 mirai-core 中使用
+
+在登录前调用
+
+```kotlin
+// kotlin
+EncryptProviderLegacy.Factory.also {
+    // 以后需要修改地址时使用 put(url, key, "qua")
+    it.put("url", "key", "qua")
+    // 此处填写 cmd whitelist
+    it.cmdWhiteList = SignClient.defaultCmdWhiteList
+    // 只需要注册一次
+    it.registerAsOverride()
+}
+```
+```java
+// java
+EncryptProviderLegacy.Factory factory = EncryptProviderLegacy.Factory.INSTANCE;
+// 以后需要修改地址时使用 put(url, key)
+factory.put("url", "key", "qua");
+// 此处填写 cmd whitelist
+factory.setCmdWhiteList(SignClient.Companion.getDefaultCmdWhiteList());
+// 只需要注册一次
+factory.registerAsOverride();
+```
+即可注册加密算法服务 以对接签名服务。
+
+**请勿重复注册服务！如需更改地址或key，请重启程序。**
