@@ -16,6 +16,9 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
 
 # 用法
 
+本插件对接 unidbg-fetch-qsign 1.1.3 **测试`不通过`**，  
+如果你需要，**可以[查看这篇文档](https://github.com/MrXiaoM/KawaiiMiku/blob/main/docs/LegacySetup.md)搭建已测试通过的旧版本 (1.1.0) 签名服务。**
+
 只要你严格按照操作流程，就可以搭建并使用签名服务。  
 所有组件均开源，由你自己操作安装可**避免被插入后门代码**。
 
@@ -110,15 +113,13 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
 下载插件 [fix-protocol-version 1.8.3](https://github.com/cssxsh/fix-protocol-version/releases/tag/v1.8.3)，使用压缩软件打开 fix-protocol-version 插件 `jar`。  
 旧版本的 fix-protocol-version 注册的服务在新版 mirai 是无效的，不需要管它注册的服务。
 
-下载插件 [mirai-device-generator](https://github.com/cssxsh/mirai-device-generator/releases) 以自动生成仿真设备信息文件。如果你有耐心用 [Aoki](https://github.com/MrXiaoM/Aoki) 生成自己手机的设备信息再复制过来也不是不行。
+(可选) 用 [Aoki](https://github.com/MrXiaoM/Aoki) 生成自己手机的设备信息，并复制到你的包里替换掉原来的。
 
 然后根据**你需要的版本**下载设备信息文件，放到你的 mirai 目录下。只要文件名正确，启动 mirai 时，fix-protocol-version 应当会自动加载。
 * `8.9.58`: https://github.com/RomiChan/protocol-versions/blob/daae3c8f35d27f870f35ea89116914fdff7c049e/android_phone.json
 * `8.9.63`: https://github.com/RomiChan/protocol-versions/blob/b74c0ac74264207d1070c651846079256d00a574/android_phone.json
 
 然后启动 mirai。
-
-如果启动 mirai 时显示”注册服务失败“的报错提示代表我们已经成功禁止 fix-protocol-version 的服务注册了，该报错可忽略。
 
 查看启动时的提示，检查是否成功更换正确协议版本的协议信息。
 
