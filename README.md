@@ -104,11 +104,10 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
 
 ## 4.使用正确的协议版本
 
-下载插件 [fix-protocol-version 1.8.3](https://github.com/cssxsh/fix-protocol-version/releases/tag/v1.8.3)，使用压缩软件打开 fix-protocol-version 插件 `jar`。
+下载插件 [fix-protocol-version 1.8.3](https://github.com/cssxsh/fix-protocol-version/releases/tag/v1.8.3)，使用压缩软件打开 fix-protocol-version 插件 `jar`。  
+旧版本的 fix-protocol-version 注册的服务在新版 mirai 是无效的，不需要管它注册的服务。
 
-点进 `xyz` 文件夹，一直点第一个文件夹直到出现一堆文件，**删除**里面所有 `.dll` 和 `.so` 结尾的文件，再复制到插件文件夹进行安装，并**确保你的mirai目录没有**`.dll`或`.so`结尾的文件。
-
-进行以上操作是为了禁止 fix-protocol-version 注册服务，避免旧版本作用于 `EncryptService` 的服务会与本插件作用于 `EncryptService.Factory` 的服务冲突。最近比较忙，我没有详细阅读 mirai 开发版本变更的代码，*不确定*会不会造成冲突。能稳一点就稳一点吧。
+下载插件 [mirai-device-generator](https://github.com/cssxsh/mirai-device-generator/releases) 以自动生成仿真设备信息文件。如果你有耐心用 [Aoki](https://github.com/MrXiaoM/Aoki) 生成自己手机的设备信息再复制过来也不是不行。
 
 然后根据**你需要的版本**下载设备信息文件，放到你的 mirai 目录下。只要文件名正确，启动 mirai 时，fix-protocol-version 应当会自动加载。
 * `8.9.58`: https://github.com/RomiChan/protocol-versions/blob/daae3c8f35d27f870f35ea89116914fdff7c049e/android_phone.json
