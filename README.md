@@ -1,6 +1,9 @@
 # KawaiiMiku
 
-**测试未通过，敬请期待**
+https://github.com/MrXiaoM/KawaiiMiku
+
+**测试未通过，目前测试结果如下，敬请期待**
+> Received packet returnCode = -10005, which may mean session expired.
 
 mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.com/fuqiuluo/unidbg-fetch-qsign) 提供的数据包签名服务。
 
