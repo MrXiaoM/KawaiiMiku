@@ -16,7 +16,7 @@ object ServiceConfig : ReadOnlyPluginConfig("config") {
 
     @ValueName("service-cmd-whitelist")
     @ValueDescription("sign 签名白名单，不懂请勿修改")
-    val serviceCmdWhiteList by value(listOf<String>())
+    val serviceCmdWhiteList by value(SignClient.defaultCmdWhiteList)
 
     @ValueDescription("是否使用旧版本 (1.1.0 或之前) 的签名服务")
     val legacy by value(false)
