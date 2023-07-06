@@ -18,8 +18,6 @@ import net.mamoe.mirai.utils.*
 import kotlin.coroutines.CoroutineContext
 
 class EncryptProvider(
-    server: String,
-    key: String,
     coroutineContext: CoroutineContext
 ) : EncryptService, SignClient(), CoroutineScope {
     override val url: String
@@ -194,7 +192,7 @@ class EncryptProvider(
 
         override fun createForBot(context: EncryptServiceContext, serviceSubScope: CoroutineScope): EncryptService {
             if (context.extraArgs[KEY_BOT_PROTOCOL] in supportedProtocol) {
-                return EncryptProvider(url, key, serviceSubScope.coroutineContext)
+                return EncryptProvider(serviceSubScope.coroutineContext)
             }
             throw UnsupportedOperationException()
         }

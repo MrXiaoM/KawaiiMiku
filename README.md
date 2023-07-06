@@ -189,6 +189,16 @@ factory.registerAsOverride();
 
 **请勿重复注册服务！如需更改地址或key，请重启程序。**
 
+# 调试
+
+mirai-console 下编辑 `/config/Console/Logger.yml`，在 `loggers:` 下面添加 `EncryptProvider: VERBOSE`，改好后如下
+```yaml
+# 特定日志记录器输出等级
+loggers:
+  EncryptProvider: VERBOSE
+```
+即可在访问签名服务器时在日志输出链接与返回结果。
+
 # 捐助
 
 前往 [爱发电](https://afdian.net/a/mrxiaom) 捐助我。
