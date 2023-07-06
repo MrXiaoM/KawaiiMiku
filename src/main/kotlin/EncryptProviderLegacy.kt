@@ -8,11 +8,11 @@ import net.mamoe.mirai.internal.spi.EncryptService
 import net.mamoe.mirai.internal.spi.EncryptServiceContext
 import net.mamoe.mirai.utils.*
 
-class EncryptProviderLegacy(
-    server: String,
-    key: String,
-    private val qua: String
-) : EncryptService, SignClient(server, key){
+class EncryptProviderLegacy : EncryptService, SignClient() {
+    override val url: String
+        get() = Factory.url
+    override val key: String
+        get() = Factory.key
     private lateinit var qimei36: String
     override fun initialize(context: EncryptServiceContext) {
         when (context.extraArgs[EncryptServiceContext.KEY_BOT_PROTOCOL]) {
@@ -51,13 +51,13 @@ class EncryptProviderLegacy(
         payload: ByteArray
     ): EncryptService.SignResult? {
 
-        if (commandName !in ServiceConfig.serviceCmdWhiteList) return null
+        if (commandName !in Factory.cmdWhiteList) return null
 
         val data = Json.decodeFromJsonElement<SignResult>(
             post(
                 "sign",
                 "uin" to context.id,
-                "qua" to qua,
+                "qua" to Factory.qua,
                 "cmd" to commandName,
                 "seq" to sequenceId,
                 "buffer" to payload.toUHexString(""),
@@ -76,9 +76,10 @@ class EncryptProviderLegacy(
     }
 
     object Factory : EncryptService.Factory {
-        private lateinit var url: String
-        private lateinit var key: String
-        private lateinit var qua: String
+        internal lateinit var url: String
+        internal lateinit var key: String
+        internal lateinit var qua: String
+        var cmdWhiteList: List<String> = listOf()
         var supportedProtocol: Array<BotConfiguration.MiraiProtocol> = arrayOf(
             BotConfiguration.MiraiProtocol.ANDROID_PHONE,
             BotConfiguration.MiraiProtocol.ANDROID_PAD
@@ -104,7 +105,7 @@ class EncryptProviderLegacy(
 
         override fun createForBot(context: EncryptServiceContext, serviceSubScope: CoroutineScope): EncryptService {
             if (context.extraArgs[EncryptServiceContext.KEY_BOT_PROTOCOL] in supportedProtocol) {
-                return EncryptProviderLegacy(url, key, qua)
+                return EncryptProviderLegacy()
             }
             throw UnsupportedOperationException()
         }

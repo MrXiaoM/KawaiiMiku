@@ -17,24 +17,27 @@ object KawaiiMiku : KotlinPlugin(
 ) {
     override fun PluginComponentStorage.onLoad() {
         ServiceConfig.reload()
-        val factory: KClass<*>
+        val factoryClass: KClass<*>
         if (ServiceConfig.legacy) {
-            factory = EncryptProviderLegacy::class
-            EncryptProviderLegacy.Factory.put(ServiceConfig.serviceUrl, ServiceConfig.serviceKey, ServiceConfig.legacyQUA)
-            EncryptProviderLegacy.Factory.registerAsOverride()
+            factoryClass = EncryptProviderLegacy::class
+            val factory = EncryptProviderLegacy.Factory
+            factory.put(ServiceConfig.serviceUrl, ServiceConfig.serviceKey, ServiceConfig.legacyQUA)
+            factory.cmdWhiteList = ServiceConfig.serviceCmdWhiteList
+            factory.registerAsOverride()
         } else {
-            factory = EncryptProvider::class
-            EncryptProvider.Factory.put(ServiceConfig.serviceUrl, ServiceConfig.serviceKey)
-            EncryptProvider.Factory.registerAsOverride()
+            factoryClass = EncryptProvider::class
+            val factory = EncryptProvider.Factory
+            factory.put(ServiceConfig.serviceUrl, ServiceConfig.serviceKey)
+            factory.cmdWhiteList = ServiceConfig.serviceCmdWhiteList
+            factory.registerAsOverride()
         }
         logger.warning("若使用本插件，即代表你信任本插件获取 qmiei、guid 等信息用于调用签名服务")
         logger.warning("警告为信息安全相关的警告，如果你信任本插件，可忽略该警告")
         @Suppress("INVISIBLE_MEMBER")
         EncryptService.factory
 
-        logger.info("Registered service: ${factory.qualifiedName}")
+        logger.info("Registered service: ${factoryClass.qualifiedName}")
     }
     override fun onEnable() {
-        logger.info("Plugin enabled")
     }
 }

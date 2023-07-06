@@ -14,10 +14,10 @@ import org.apache.http.util.EntityUtils
 import java.net.URLEncoder
 
 
-open class SignClient(
-    protected var url: String,
-    protected var key: String
-) {
+abstract class SignClient {
+
+    abstract val url: String
+    abstract val key: String
     fun getServiceUrl(path: String, arguments: Map<String, Any>): String {
         return getServiceUrl(path + arguments.map { it.key + "=" + URLEncoder.encode(it.value.toString(), "UTF-8") }.joinToString("&", "?"))
     }

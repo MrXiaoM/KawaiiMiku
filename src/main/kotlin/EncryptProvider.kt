@@ -21,7 +21,11 @@ class EncryptProvider(
     server: String,
     key: String,
     coroutineContext: CoroutineContext
-) : EncryptService, SignClient(server, key), CoroutineScope {
+) : EncryptService, SignClient(), CoroutineScope {
+    override val url: String
+        get() = Factory.url
+    override val key: String
+        get() = Factory.key
     override val coroutineContext: CoroutineContext =
         coroutineContext + SupervisorJob(coroutineContext[Job]) + CoroutineExceptionHandler { context, exception ->
             when (exception) {
@@ -62,7 +66,7 @@ class EncryptProvider(
         payload: ByteArray
     ): ByteArray? {
         if (tlvType != 0x544) return null
-        return energy(context, payload)
+        return customEnergy(context, payload)
     }
 
     fun energy(context: EncryptServiceContext, payload: ByteArray): ByteArray? {
@@ -121,7 +125,7 @@ class EncryptProvider(
             }
         }
 
-        if (commandName !in ServiceConfig.serviceCmdWhiteList) return null
+        if (commandName !in Factory.cmdWhiteList) return null
 
         val data = Json.decodeFromJsonElement<SignResult>(post("sign",
             "uin" to context.id,
@@ -163,12 +167,13 @@ class EncryptProvider(
     }
 
     object Factory : EncryptService.Factory {
-        private lateinit var url: String
-        private lateinit var key: String
+        internal lateinit var url: String
+        internal lateinit var key: String
         var supportedProtocol: Array<BotConfiguration.MiraiProtocol> = arrayOf(
             BotConfiguration.MiraiProtocol.ANDROID_PHONE,
             BotConfiguration.MiraiProtocol.ANDROID_PAD
         )
+        var cmdWhiteList: List<String> = listOf()
         fun put(url: String, key: String) {
             this.url = url
             this.key = key
