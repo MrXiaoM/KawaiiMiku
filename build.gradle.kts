@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "top.mrxiaom.mirai"
-version = "0.1.4"
+version = "0.1.5"
 
 buildConfig {
     className("BuildConstants")

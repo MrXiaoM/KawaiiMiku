@@ -144,7 +144,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.MrXiaoM:KawaiiMiku:0.1.3")
+    implementation("com.github.MrXiaoM:KawaiiMiku:0.1.5")
 }
 ```
 ```pom
@@ -159,17 +159,32 @@ dependencies {
 <dependency>
   <groupId>com.github.MrXiaoM</groupId>
   <artifactId>KawaiiMiku</artifactId>
-  <version>0.1.3</version>
+  <version>0.1.5</version>
 </dependency>
 ```
 在登录前调用
 
 ```kotlin
 // kotlin
-EncryptProvider.Factory.put(serviceUrl, serviceKey)
-EncryptProvider.Factory.registerAsOverride()
+EncryptProvider.Factory.also {
+    // 以后需要修改地址时使用 put(url, key)
+    it.put("url", "key")
+    // 此处填写 cmd whitelist
+    it.cmdWhiteList = SignClient.defaultCmdWhiteList
+    // 只需要注册一次
+    it.registerAsOverride()
+}
 ```
-
+```java
+// java
+EncryptProvider.Factory factory = EncryptProvider.Factory.INSTANCE;
+// 以后需要修改地址时使用 put(url, key)
+factory.put("url", "key");
+// 此处填写 cmd whitelist
+factory.setCmdWhiteList(SignClient.Companion.getDefaultCmdWhiteList());
+// 只需要注册一次
+factory.registerAsOverride();
+```
 即可注册加密算法服务 以对接签名服务。
 
 **请勿重复注册服务！如需更改地址或key，请重启程序。**
