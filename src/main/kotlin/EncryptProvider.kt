@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
+import net.mamoe.mirai.internal.deps.io.ktor.utils.io.core.ByteReadPacket
 import net.mamoe.mirai.internal.spi.EncryptService
 import net.mamoe.mirai.internal.spi.EncryptServiceContext
 import net.mamoe.mirai.internal.spi.EncryptServiceContext.Companion.KEY_BOT_PROTOCOL
@@ -30,34 +31,10 @@ class EncryptProvider(
                 }
             }
         }
+    private val dataForVerify = arrayOf("810_2", "810_7")
     private var channel0: EncryptService.ChannelProxy? = null
     private val channel: EncryptService.ChannelProxy get() = channel0 ?: throw IllegalStateException("need initialize")
     private val token = java.util.concurrent.atomic.AtomicBoolean(false)
-
-    @Deprecated(
-        message = "",
-        replaceWith = ReplaceWith(
-            "EncryptProvider.Factory(url, key).register()",
-            "top.mrxiaom.mirai.kawaii.EncryptProvider.Factory"
-        )
-    )
-    fun register() {
-        Services.register(
-            EncryptService::class.qualifiedName!!,
-            this::class.qualifiedName!!) { this }
-    }
-    @Deprecated(
-        message = "",
-        replaceWith = ReplaceWith(
-            "EncryptProvider.Factory(url, key).registerAsOverride()",
-            "top.mrxiaom.mirai.kawaii.EncryptProvider.Factory"
-        )
-    )
-    fun registerAsOverride() {
-        Services.registerAsOverride(
-            EncryptService::class.qualifiedName!!,
-            this::class.qualifiedName!!) { this }
-    }
 
     @OptIn(MiraiInternalApi::class)
     override fun initialize(context: EncryptServiceContext) {
@@ -67,7 +44,6 @@ class EncryptProvider(
             else -> return
         }
         val deviceInfo = context.extraArgs[KEY_DEVICE_INFO]
-        channel0 = context.extraArgs[KEY_CHANNEL_PROXY]
 
         get("register",
             "uin" to context.id,
@@ -76,6 +52,8 @@ class EncryptProvider(
             "qimei36" to context.extraArgs[KEY_QIMEI36],
             "key" to key
         )
+
+        channel0 = context.extraArgs[KEY_CHANNEL_PROXY]
     }
 
     override fun encryptTlv(
@@ -84,6 +62,32 @@ class EncryptProvider(
         payload: ByteArray
     ): ByteArray? {
         if (tlvType != 0x544) return null
+        return energy(context, payload)
+    }
+
+    fun energy(context: EncryptServiceContext, payload: ByteArray): ByteArray? {
+        val command = context.extraArgs[KEY_COMMAND_STR]
+        val guid: String
+        val version: String
+        payload.toReadPacket().use { dataIn ->
+            if (dataForVerify.contains(command)) dataIn.readLong() else dataIn.readPacketExact(4)
+            guid = dataIn.readUShortLVByteArray().toUHexString("")
+            version = dataIn.readUShortLVString()
+        }
+
+        val energy = get("energy",
+            "uin" to context.id,
+            "data" to command,
+            "version" to version,
+            "guid" to guid) ?: return null
+
+        val data = Json.decodeFromJsonElement(String.serializer(), energy)
+        logger.verbose("energy $command: $data")
+
+        return data.hexToBytes()
+    }
+
+    fun customEnergy(context: EncryptServiceContext, payload: ByteArray): ByteArray? {
         val command = context.extraArgs[KEY_COMMAND_STR]
 
         val energy = get("custom_energy",
@@ -93,7 +97,7 @@ class EncryptProvider(
         ) ?: return null
 
         val data = Json.decodeFromJsonElement(String.serializer(), energy)
-        logger.verbose("encryptTlv $data")
+        logger.verbose("custom_energy $command $data")
 
         return data.hexToBytes()
     }
@@ -190,6 +194,10 @@ class EncryptProvider(
             throw UnsupportedOperationException()
         }
     }
+}
+
+private fun ByteReadPacket.readLong(): Long {
+    return InputPrimitives.readLong(this)
 }
 
 @Serializable
