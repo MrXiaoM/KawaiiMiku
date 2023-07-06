@@ -120,13 +120,13 @@ unidbg-fetch-qsign 从 1.1.1 引入新机制，故小于或等于 1.1.0 的版�
 
 # 如何在 mirai-core 中使用
 
-在登录前调用
+在登录前调用 (`qua` 在前面有提到，为方便快速使用，此处给出 `8.9.58` 对应的 `qua` 是 `V1_AND_SQ_8.9.58_4106_YYB_D`，不同版本的 `qua` 不同，请勿在不同版本混用)
 
 ```kotlin
 // kotlin
 EncryptProviderLegacy.Factory.also {
-    // 以后需要修改地址时使用 put(url, key, "qua")
-    it.put("url", "key", "qua")
+    // 以后需要修改地址时使用 put(url, key, qua)
+    it.put("url", "key", "V1_AND_SQ_8.9.58_4106_YYB_D")
     // 此处填写 cmd whitelist
     it.cmdWhiteList = SignClient.defaultCmdWhiteList
     // 只需要注册一次
@@ -136,8 +136,8 @@ EncryptProviderLegacy.Factory.also {
 ```java
 // java
 EncryptProviderLegacy.Factory factory = EncryptProviderLegacy.Factory.INSTANCE;
-// 以后需要修改地址时使用 put(url, key)
-factory.put("url", "key", "qua");
+// 以后需要修改地址时使用 put(url, key, qua)
+factory.put("url", "key", "V1_AND_SQ_8.9.58_4106_YYB_D");
 // 此处填写 cmd whitelist
 factory.setCmdWhiteList(SignClient.Companion.getDefaultCmdWhiteList());
 // 只需要注册一次
