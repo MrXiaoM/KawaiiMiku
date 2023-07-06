@@ -6,14 +6,18 @@ unidbg-fetch-qsign 从 1.1.1 引入新机制，故小于或等于 1.1.0 的版�
 
 操作方法与新版大同小异。
 
-## 1.下载开发版本
+目前旧版模式仅支持单个bot登录。多个bot登录需要使用同一协议，设备信息使用同一 `androidId`。这个问题可能会在以后的版本解决。
 
+------
+
+## 1.下载开发版本
 
 使用 [Lapis](https://mirai.mamoe.net/topic/2333) 根据操作提示，安装一个大于或等于 `2.15.0-dev-105` 的开发版本到一个新的文件夹。  
 
 安装完成后先不安装本插件，启动 mirai，执行一次登录命令让 mirai 生成设备信息文件，关闭 mirai。  
 然后用文本编辑器打开设备信息文件 `mirai/bots/QQ号/device.json`
-记下文件内容最后面的 `androidId` 的值，**之后要用**，这个值的格式是 **16位长度的字母+数字**，如果不是这个格式，请确保没有按照 `mirai-device-generator` 插件，并删除 `device.json` 再登录。
+记下文件内容最后面的 `androidId` 的值，**之后要用**。  
+这个值的格式是 **16位长度的字母+数字**，如果不是这个格式，请确保没有安装 `mirai-device-generator` 插件，并删除 `device.json` 再登录。
 
 然后再安装本插件，启动 mirai，再关闭 mirai，让它生成配置文件。
 
@@ -34,10 +38,11 @@ unidbg-fetch-qsign 从 1.1.1 引入新机制，故小于或等于 1.1.0 的版�
   |- Start.Server.sh
 ```
 
+------
+
 ## 2.部署签名服务
 
-首先下载服务本体，下载 [unidbg-fetch-qsign](https://github.com/fuqiuluo/unidbg-fetch-qsign/releases)，本插件**旧版模式**适配 `1.1.0` 版本的签名服务。
-
+首先下载服务本体，下载 [unidbg-fetch-qsign](https://github.com/fuqiuluo/unidbg-fetch-qsign/releases)，本插件**旧版模式**适配 `1.1.0` 版本的签名服务。  
 下载后找个你记得的地方解压，这个地方记为 unidbg-fetch-qsign 目录。
 
 本教程解压到 `mirai/unidbg-fetch-qsign-1.1.0` 文件夹下方便以后开启签名服务。
@@ -82,8 +87,7 @@ unidbg-fetch-qsign 从 1.1.1 引入新机制，故小于或等于 1.1.0 的版�
 
 **注意:** 每次更改设备信息文件之后，都要重新改一次启动脚本里的 `android_id`。
 
-然后打开 **签名服务启动脚本** `Sign.Legacy.cmd` (Linux 是 `Sign.Legacy.sh`)，确认 `Android ID` 是否正确。
-
+然后打开 **签名服务启动脚本** `Sign.Legacy.cmd` (Linux 是 `Sign.Legacy.sh`)，确认 `Android ID` 是否正确。  
 选择你要启动的签名服务版本，这里举例用 `8.9.58`，就输入版本号 `8.9.58` 回车启动。
 
 > 通常不会发生端口冲突的情况，如果出现 `already in use` 之类的提示，则需要在该配置文件把 `port` 改为 `1-65535` 之间的随便一个数再启动，直到不冲突为止。
@@ -91,6 +95,8 @@ unidbg-fetch-qsign 从 1.1.1 引入新机制，故小于或等于 1.1.0 的版�
 出现 `ktor.application - Responding at XXXXX:XXXX` 的提示就算启动完成了 (这个提示在旧版很快就被其它消息刷掉了，你瞄到有这么一句话闪过就行了)，到浏览器进入网址 `http://127.0.0.1:端口`，如果显示出 `IAA` 之类的文字则代表签名服务工作正常。
 
 如果要关闭签名服务，在签名服务窗口按下 `Ctrl+C` 即可正常关闭。
+
+------
 
 ## 3.配置签名插件
 
@@ -105,9 +111,11 @@ unidbg-fetch-qsign 从 1.1.1 引入新机制，故小于或等于 1.1.0 的版�
 
 > qua 的值可以在新版算法库配置的 config.json 中获得，qua 不能乱填乱改，否则将无法登录。
 
+------
+
 ## 4.使用正确的协议版本
 
-下载插件 [fix-protocol-version 1.8.3](https://github.com/cssxsh/fix-protocol-version/releases/tag/v1.8.3)，使用压缩软件打开 fix-protocol-version 插件 `jar`。  
+下载并安装插件 [fix-protocol-version 1.8.3](https://github.com/cssxsh/fix-protocol-version/releases/tag/v1.8.3)。  
 旧版本的 fix-protocol-version 注册的服务在新版 mirai 是无效的，不需要管它注册的服务。
 
 (可选) 用 [Aoki](https://github.com/MrXiaoM/Aoki) 生成自己手机的设备信息，并复制到你的包里替换掉原来的。
@@ -124,7 +132,9 @@ unidbg-fetch-qsign 从 1.1.1 引入新机制，故小于或等于 1.1.0 的版�
 
 **至此，你已经完成了旧版签名服务与签名插件配置。**
 
-# 如何在 mirai-core 中使用
+------
+
+# 在 mirai-core 中使用
 
 在登录前调用 (`qua` 在前面有提到，为方便快速使用，此处给出 `8.9.58` 对应的 `qua` 是 `V1_AND_SQ_8.9.58_4106_YYB_D`，不同版本的 `qua` 不同，请勿在不同版本混用)
 
@@ -151,4 +161,6 @@ factory.registerAsOverride();
 ```
 即可注册加密算法服务 以对接签名服务。
 
-**请勿重复注册服务！如需更改地址或key，请重启程序。**
+用法有可能在以后的版本中有变动。
+
+**请勿重复注册服务！**

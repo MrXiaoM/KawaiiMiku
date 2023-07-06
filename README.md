@@ -2,7 +2,8 @@
 
 https://github.com/MrXiaoM/KawaiiMiku
 
-**测试未通过，目前测试结果如下，敬请期待**
+**[旧版](https://github.com/MrXiaoM/KawaiiMiku/blob/main/docs/LegacySetup.md)可使用，已测试通过**
+**新版测试未通过，目前测试结果如下，敬请期待**
 > Received packet returnCode = -10005, which may mean session expired.
 
 mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.com/fuqiuluo/unidbg-fetch-qsign) 提供的数据包签名服务。
@@ -14,15 +15,21 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
 **警告:** 使用签名服务有被冻结/封号的风险，请视自身情况决定是否使用。  
 如果你的账号可以正常登录，请**不要**来折腾签名服务。
 
-# 用法
-
 本插件对接 unidbg-fetch-qsign 1.1.3 **测试`不通过`**，  
 如果你需要，**可以[查看这篇文档](https://github.com/MrXiaoM/KawaiiMiku/blob/main/docs/LegacySetup.md)搭建已测试通过的旧版本 (1.1.0) 签名服务。**
+
+```
+如果你觉得有用，请给本帖或者 Github 仓库点一个 赞 或者 标星(Star)
+```
+
+# 用法
 
 只要你严格按照操作流程，就可以搭建并使用签名服务。  
 所有组件均开源，由你自己操作安装可**避免被插入后门代码**。
 
 **注意:** 签名服务对电脑性能有一定要求，请使用良好的 CPU 并保持内存充足。
+
+------
 
 ## 1.下载开发版本
 
@@ -43,6 +50,8 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
   |- Start.sh
   |- Start.Server.sh
 ```
+
+------
 
 ## 2.部署签名服务
 
@@ -100,6 +109,8 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
 
 如果要关闭签名服务，在签名服务窗口按下 `Ctrl+C` 即可正常关闭。
 
+------
+
 ## 3.配置签名插件
 
 打开 **签名插件配置文件** `config/top.mrxiaom.mirai.kawaii/config.yml`。
@@ -107,6 +118,8 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
 * 将 `service-key` 改为你上一步获得的 `key` 即 `密钥`
 
 保存配置文件。
+
+------
 
 ## 4.使用正确的协议版本
 
@@ -127,6 +140,8 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
 
 **至此，你已经完成了签名服务与签名插件配置。**
 
+------
+
 # 从整合包迁移
 
 如果你想将你的插件和数据从**你正在使用的 mirai**、**某某整合包**或者**MCL**迁移到新的包，请按照以下步骤操作
@@ -137,7 +152,9 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
 * 删除 `mcl-addon` 插件。(如果有的话)
 * 后缀为 `.sha1` 的文件用于 MCL 校验插件文件完整性，如果你不需要可以删除。
 
-# 如何在 mirai-core 中使用
+------
+
+# 在 mirai-core 中使用
 
 引用本插件为依赖
 
@@ -191,7 +208,11 @@ factory.registerAsOverride();
 ```
 即可注册加密算法服务 以对接签名服务。
 
-**请勿重复注册服务！如需更改地址或key，请重启程序。**
+用法有可能在以后的版本中有变动。
+
+**请勿重复注册服务！**
+
+------
 
 # 调试
 
@@ -201,7 +222,12 @@ mirai-console 下编辑 `/config/Console/Logger.yml`，在 `loggers:` 下面添�
 loggers:
   EncryptProvider: VERBOSE
 ```
-即可在访问签名服务器时在日志输出链接与返回结果。
+即可在访问签名服务器时在日志**输出链接与返回结果**。
+
+HTTP GET: `http://链接?参数 : 结果`  
+HTTP POST: `http://链接 内容 : 结果`
+
+------
 
 # 捐助
 
