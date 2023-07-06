@@ -123,7 +123,7 @@ mirai 框架加密算法提供器。使用 [unidbg-fetch-qsign](https://github.c
 
 ## 4.使用正确的协议版本
 
-下载插件 [fix-protocol-version 1.8.3](https://github.com/cssxsh/fix-protocol-version/releases/tag/v1.8.3)，使用压缩软件打开 fix-protocol-version 插件 `jar`。  
+下载插件 [fix-protocol-version 1.8.3](https://github.com/cssxsh/fix-protocol-version/releases/tag/v1.8.3)。  
 旧版本的 fix-protocol-version 注册的服务在新版 mirai 是无效的，不需要管它注册的服务。
 
 (可选) 用 [Aoki](https://github.com/MrXiaoM/Aoki) 生成自己手机的设备信息，并复制到你的包里替换掉原来的。
