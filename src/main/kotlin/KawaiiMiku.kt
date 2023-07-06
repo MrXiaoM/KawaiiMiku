@@ -17,6 +17,7 @@ object KawaiiMiku : KotlinPlugin(
 ) {
     override fun PluginComponentStorage.onLoad() {
         ServiceConfig.reload()
+        ServiceConfig.save()
         val factoryClass: KClass<*>
         if (ServiceConfig.legacy) {
             factoryClass = EncryptProviderLegacy::class
